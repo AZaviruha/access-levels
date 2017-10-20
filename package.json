@@ -1,0 +1,24 @@
+{
+  "name": "access-levels",
+  "version": "0.1.0",
+  "description": "Simple lib for calculation role/access_level matching",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "node test/stupid.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AZaviruha/access-levels.git"
+  },
+  "keywords": [
+    "access",
+    "levels",
+    "roles"
+  ],
+  "author": "Alexei Zaviruha",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/AZaviruha/access-levels/issues"
+  },
+  "homepage": "https://github.com/AZaviruha/access-levels#readme"
+}
