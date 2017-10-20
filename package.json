@@ -1,6 +1,6 @@
 {
   "name": "access-levels",
-  "version": "0.1.0",
+  "version": "0.0.0",
   "description": "Simple lib for calculation role/access_level matching",
   "main": "src/index.js",
   "scripts": {
