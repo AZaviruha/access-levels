@@ -5,17 +5,17 @@ const defaultAccessLevels = {
     'admin': [ 'admin' ]
 }
 
+function build(levels = defaultAccessLevels) {
+    const roles = buildRoles(levels)
+    const accessLevels = buildLevels(levels, roles)
 
-const flatConcat = arrs => arrs.reduce(
-    (acc, x) => acc.concat(Array.isArray(x) ? flatConcat(x) : [x]), [])
+    return { roles, accessLevels }
+}
 
-const uniq = arr => [... new Set(arr)]
+module.exports = build
 
-const without = (el, arr) => arr.filter(x => x !== el)
 
-const arrToChars = (arr, char='1') => Object.keys(arr).reduce(acc => acc + char, '')
-
-const buildRoles = levels => {
+function buildRoles(levels) {
     const roleNames = without('*', uniq(flatConcat(Object.values(levels))))
 
     const roles = roleNames.reduce(([ roles, bitMask ], roleName) => {
@@ -29,10 +29,10 @@ const buildRoles = levels => {
     return roles[0];
 }
 
-const buildLevels = (levelDefinitions, roles) => {
+function buildLevels (levelDefinitions, roles) {
     const buildLevel = (acc, [levelName, levelRoles]) => {
         if (levelRoles === '*') {
-            acc[levelName] = parseInt(arrToChars(roles), 2)
+            acc[levelName] = parseInt(arrToChars(roles, '1'), 2)
         } else {
             acc[levelName] = levelRoles.reduce(
                 (acc, levelRole) => acc | roles[levelRole].bitMask, 0)
@@ -44,11 +44,21 @@ const buildLevels = (levelDefinitions, roles) => {
     return Object.entries(levelDefinitions).reduce(buildLevel, {})
 }
 
-function build(levels = defaultAccessLevels) {
-    const roles = buildRoles(levels)
-    const accessLevels = buildLevels(levels, roles)
 
-    return { roles, accessLevels }
+// ------------------------------ HELPERS ------------------------------ //
+
+function flatConcat(arrs) {
+    return arrs.reduce((acc, x) => acc.concat(Array.isArray(x) ? flatConcat(x) : [x]), [])
 }
 
-module.exports = build
+function uniq(arr) {
+    return [... new Set(arr)]
+}
+
+function without(el, arr) {
+    return arr.filter(x => x !== el)
+}
+
+function arrToChars(arr, char='1') {
+    return Object.keys(arr).reduce(acc => acc + char, '')
+}
